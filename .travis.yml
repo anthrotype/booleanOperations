@@ -1,0 +1,26 @@
+language:
+- objective-c
+env:
+  matrix:
+  - INSTALL_TYPE='macpython' VERSION=2.7.10
+  - INSTALL_TYPE='macpython' VERSION=3.4.3
+  - INSTALL_TYPE='macpython' VERSION=3.5.0
+install:
+- source terryfy/travis_tools.sh
+- get_python_environment $INSTALL_TYPE $VERSION venv
+- pip install --upgrade wheel
+- pip install cython
+script:
+- pip wheel -v -w dist .
+before_deploy:
+- export DIST=$(ls ./dist)
+deploy:
+  provider: releases
+  api_key:
+    secure: VaSLAwK4odr3KPxetFOXP0vZWEDeL8VmefVYTiOyZFODlbCKxeT5t+bjX5sATHiQ6cbgiemFrA5F+VNZhgJmiJVUWnvpT3n+3TbcAh/91WAwYm6F61O/dTG+l+T1bUkBjCKkeigiJakL6Tmc4TuVOAPVaA5S2Syw1SVnnYoyJIwsCxf88Z/sos7scXFnbbqsJQmnSjfy9CGA532dyO/jyEdfeQK8GtBgGvN78jUVmIjbcZaMnsdtg9Pzr3ELU/vgb8CcvfRrqdqbWbd/SHR5ehGNn5KEahs7p+E28Bakne0Fhb5ygTDZ2JveXD35Cz7um2sdwCLI+ToWTXrf61Bhz2XJjfiRnbnFltQeYcs9BFeZXeVdZAErM2FHPJ8vIifpTYPx2+0EmSg1smyJOG7JHtcnsS+mBavaOYSlpzeV6XmL/fhrZNX1D/cA2PUNeMPuM6qP3zg2Oz6rW7FKcKg9wfbLwC6ej1fqoOG7sADMha4TizruPC4CdgIROhPi/IRZ+inuwGoljAP8Qx52xgZuHOOC8LDfHTMUGYDFscDQaNHA4HVQBzScy6G5HNk7kc6eavhQUMR/d0I+f2LJOl0ylOvPtoKwWMaP0C3t2ySympv4EoszwLtEi4cSwI5F4pFfYOOFNfrPY1WSnJWU5ZwAoXldkWN7/FoYPIAlziAygG4=
+  file:
+    - "${DIST}"
+  skip_cleanup: true
+  on:
+    repo: anthrotype/booleanOperations
+    tags: true
