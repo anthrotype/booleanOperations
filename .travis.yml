@@ -13,7 +13,7 @@ install:
 script:
 - pip wheel -v -w dist .
 before_deploy:
-- export DIST=$(ls ./dist)
+- export DIST=$(echo dist/*)
 deploy:
   provider: releases
   api_key:
