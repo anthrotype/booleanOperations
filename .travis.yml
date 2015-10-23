@@ -8,10 +8,11 @@ env:
 install:
 - source terryfy/travis_tools.sh
 - get_python_environment $INSTALL_TYPE $VERSION venv
-- pip install --upgrade wheel
-- pip install cython
+- $PIP_CMD install --upgrade wheel
+- $PIP_CMD install cython
 script:
-- pip wheel -v -w dist .
+- $PYTHON_EXE setup.py sdist --formats=gztar,zip
+- $PIP_CMD wheel -v -w dist .
 before_deploy:
 - export DIST=$(echo dist/*)
 deploy:
