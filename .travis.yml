@@ -1,5 +1,5 @@
-language:
-- objective-c
+os:
+  - osx
 env:
   matrix:
   - INSTALL_TYPE='macpython' VERSION=2.7.10 CC=clang CXX=clang++
