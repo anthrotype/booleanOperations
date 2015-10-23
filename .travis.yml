@@ -13,7 +13,7 @@ install:
 script:
   - $PIP_CMD wheel -v -w . .
 after_success:
-  - $PYTHON_EXE setup.py sdist --formats=gztar,zip
+  - $PYTHON_EXE setup.py sdist -d . --formats=gztar,zip
 before_deploy:
   - export GZTAR=$(ls *.tar.gz)
   - export ZIP=$(ls *.zip)
