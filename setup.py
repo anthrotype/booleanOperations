@@ -9,9 +9,24 @@ wheel = ['wheel'] if needs_wheel else []
 with open('README.md', 'r') as f:
     long_description = f.read()
 
+
+def custom_git_parse(root):
+    """ Travis only clones a 'shallow' repository (--depth=50), but we need
+    the full repository to compute the version from the git metadata.
+    By default setuptools_scm (as of v1.15.0) only warns when the repository
+    is shallow; here we make it `fetch_on_shallow`.
+
+    See: https://github.com/pypa/setuptools_scm/issues/93
+    """
+    from setuptools_scm.git import parse, fetch_on_shallow
+    return parse(root, pre_parse=fetch_on_shallow)
+
+
 setup_params = dict(
     name="booleanOperations",
-    use_scm_version=True,
+    use_scm_version={
+        'parse': custom_git_parse,
+    },
     description="Boolean operations on paths.",
     long_description=long_description,
     author="Frederik Berlaen",
@@ -21,7 +36,7 @@ setup_params = dict(
     package_dir={"": "Lib"},
     packages=find_packages("Lib"),
     setup_requires=[
-        "setuptools_scm>=1.11.1,!=1.13.1,!=1.14.0",
+        "setuptools_scm>=1.15.0",
     ] + pytest_runner + wheel,
     tests_require=[
         'pytest>=3.0.2',
