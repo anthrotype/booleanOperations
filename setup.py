@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 import sys
+import os
 
 needs_pytest = {'pytest', 'test'}.intersection(sys.argv)
 pytest_runner = ['pytest_runner'] if needs_pytest else []
@@ -19,7 +20,10 @@ def custom_git_parse(root):
     See: https://github.com/pypa/setuptools_scm/issues/93
     """
     from setuptools_scm.git import parse, fetch_on_shallow
-    return parse(root, pre_parse=fetch_on_shallow)
+    if os.path.exists(os.path.join(root, 'PKG-INFO')):
+        return None
+    else:
+        return parse(root, pre_parse=fetch_on_shallow)
 
 
 setup_params = dict(
